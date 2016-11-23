@@ -145,8 +145,6 @@ avr_reset(
 		avr->data[i] = 0;
 	_avr_sp_set(avr, avr->ramend);
 	avr->pc = avr->reset_pc;	// Likely to be zero
-	for (int i = 0; i < 8; i++)
-		avr->sreg[i] = 0;
 	avr_interrupt_reset(avr);
 	avr_cycle_timer_reset(avr);
 	/* Take simulation start time */
@@ -294,7 +292,7 @@ avr_callback_run_gdb(
 	avr->pc = new_pc;
 
 	if (avr->state == cpu_Sleeping) {
-		if (!avr->sreg[S_I]) {
+		if (!SREG_BIT(S_I)) {
 			if (avr->log)
 				AVR_LOG(avr, LOG_TRACE, "simavr: sleeping with interrupts off, quitting gracefully\n");
 			avr->state = cpu_Done;
@@ -362,7 +360,7 @@ avr_callback_run_raw(
 	avr->pc = new_pc;
 
 	if (avr->state == cpu_Sleeping) {
-		if (!avr->sreg[S_I]) {
+		if (!SREG_BIT(S_I)) {
 			if (avr->log)
 				AVR_LOG(avr, LOG_TRACE, "simavr: sleeping with interrupts off, quitting gracefully\n");
 			avr->state = cpu_Done;
