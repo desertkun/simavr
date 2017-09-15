@@ -292,6 +292,7 @@ avr_callback_run_gdb(
 	avr->pc = new_pc;
 
 	if (avr->state == cpu_Sleeping) {
+		SREG_START(avr);
 		if (!SREG_BIT(S_I)) {
 			if (avr->log)
 				AVR_LOG(avr, LOG_TRACE, "simavr: sleeping with interrupts off, quitting gracefully\n");
@@ -360,6 +361,7 @@ avr_callback_run_raw(
 	avr->pc = new_pc;
 
 	if (avr->state == cpu_Sleeping) {
+		SREG_START(avr);
 		if (!SREG_BIT(S_I)) {
 			if (avr->log)
 				AVR_LOG(avr, LOG_TRACE, "simavr: sleeping with interrupts off, quitting gracefully\n");

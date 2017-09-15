@@ -39,6 +39,7 @@ static avr_cycle_count_t avr_extint_poll_level_trig(
 {
 	avr_extint_poll_context_t *poll = (avr_extint_poll_context_t *)param;
 	avr_extint_t * p = (avr_extint_t *)poll->extint;
+	SREG_START(avr);
 
 	char port = p->eint[poll->eint_no].port_ioctl & 0xFF;
 	avr_ioport_state_t iostate;
@@ -141,6 +142,7 @@ static void avr_extint_irq_notify(struct avr_irq_t * irq, uint32_t value, void *
 					to turn this feature off. In this case bahaviour will be similar to the falling edge interrupt.
 				 */
 				if (!value) {
+					SREG_START(avr);
 					if (SREG_BIT(S_I)) {
 						uint8_t raised = avr_regbit_get(avr, p->eint[irq->irq].vector.raised) || p->eint[irq->irq].vector.pending;
 						if (!raised)

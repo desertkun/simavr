@@ -112,6 +112,7 @@ avr_raise_interrupt(
 		avr_t * avr,
 		avr_int_vector_t * vector)
 {
+	SREG_START(avr);
 	if (!vector || !vector->vector)
 		return 0;
 	if (vector->pending) {
@@ -232,6 +233,7 @@ void
 avr_service_interrupts(
 		avr_t * avr)
 {
+	SREG_START(avr);
 	if (!SREG_BIT(S_I) || !avr->interrupt_state)
 		return;
 
