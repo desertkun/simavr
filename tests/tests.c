@@ -76,6 +76,7 @@ static int my_avr_run(avr_t * avr)
 	avr->pc = new_pc;
 
 	if (avr->state == cpu_Sleeping) {
+		SREG_START(avr);
 		if (!SREG_BIT(S_I)) {
 			printf("simavr: sleeping with interrupts off, quitting gracefully\n");
 			avr_terminate(avr);
